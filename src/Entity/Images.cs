@@ -7,6 +7,7 @@ namespace src.Entity
 {
     public class Images
     {
-        
+        public Guid ImageId { get; set; }
+        public string ImageUrl { get; set; }
     }
 }
