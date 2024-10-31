@@ -20,7 +20,7 @@ namespace src.Entity
 
             foreach (var order in Orders)
             {
-                foreach (var orderProduct in order.OrderProducts)
+                foreach (var orderProduct in order.SingleProduct)
                 {
                     totalCartPrice += (double)orderProduct.FinalPrice;
                 }
@@ -28,5 +28,5 @@ namespace src.Entity
 
             return totalCartPrice;
         }
-    } 
-} 
+    }
+}

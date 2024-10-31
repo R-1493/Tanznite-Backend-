@@ -30,13 +30,16 @@ namespace src.Controllers
         public async Task<ActionResult<OrderReadDto>> CreateOne([FromBody] OrderCreateDto createDto)
         {
             var authenticateClaims = HttpContext.User;
-            var userIdClaim = authenticateClaims.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var userIdClaim = authenticateClaims
+                .FindFirst(c => c.Type == ClaimTypes.NameIdentifier)
+                ?.Value;
 
             var userGuid = new Guid(userIdClaim);
 
             // Directly query the database to find the user's address
-            var address = await _databaseContext.Addresses
-                .FirstOrDefaultAsync(a => a.UserId == userGuid);
+            var address = await _databaseContext.Addresses.FirstOrDefaultAsync(a =>
+                a.UserId == userGuid
+            );
 
             // Use the found addressId
             var addressId = address.AddressId;
@@ -54,7 +57,6 @@ namespace src.Controllers
             }
             return Ok(orders);
         }
-
 
         [HttpGet("Order")]
         [Authorize]

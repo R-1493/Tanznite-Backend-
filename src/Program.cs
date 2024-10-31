@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Npgsql;
+using Services.GemstoneShape;
 using src.Database;
 using src.Entity;
 using src.Middlewares;
@@ -14,6 +15,7 @@ using src.Services.Address;
 using src.Services.cart;
 using src.Services.category;
 using src.Services.Gemstone;
+using src.Services.GemstoneShape;
 using src.Services.Jewelry;
 using src.Services.Order;
 using src.Services.Payment;
@@ -78,6 +80,11 @@ builder
 builder
     .Services.AddScoped<IOrderService, OrderService>()
     .AddScoped<OrderRepository, OrderRepository>();
+
+//GemstonShap
+builder
+    .Services.AddScoped<IGemstoneShapeService, GemstoneShapeService>()
+    .AddScoped<GemstoneShapeRepository, GemstoneShapeRepository>();
 
 builder
     .Services.AddAuthentication(options =>

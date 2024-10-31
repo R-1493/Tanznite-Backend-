@@ -8,17 +8,16 @@ namespace src.Entity
     public class Order
     {
         public Guid OrderId { get; set; }
-        public Guid UserId { get; set; } 
+        public Guid UserId { get; set; }
         public DateTime CreatedAt { get; set; }
-        public Guid AddressId { get; set; } 
+        public Guid AddressId { get; set; }
 
-        public List<OrderGemstone> OrderProducts { get; set; } 
+        public List<SingleProduct> SingleProduct { get; set; }
 
         public Guid? CartId { get; set; }
         public Cart? Cart { get; set; } = null!;
 
         public Guid? PaymentId { get; set; }
         public Payment Payment { get; set; } = null!;
-
     }
 }

@@ -9,11 +9,12 @@ using static src.DTO.AddressDTO;
 using static src.DTO.CartDTO;
 using static src.DTO.CategoryDTO;
 using static src.DTO.GemstonesDTO;
+using static src.DTO.GemstoneShapeDTO;
 using static src.DTO.JewelryDTO;
 using static src.DTO.OrderDTO;
-using static src.DTO.OrderGemstoneDTO;
 using static src.DTO.PaymentDTO;
 using static src.DTO.ReviewDTO;
+using static src.DTO.SingleProductDTO;
 using static src.DTO.UserDTO;
 
 namespace src.Utils
@@ -29,7 +30,6 @@ namespace src.Utils
                     opts.Condition((src, dest, srcProperty) => srcProperty != null)
                 );
 
-
             CreateMap<Review, ReviewReadDTO>();
             CreateMap<ReviewCreateDTO, Review>();
             CreateMap<ReviewUpdateDTO, Review>()
@@ -37,14 +37,12 @@ namespace src.Utils
                     opts.Condition((src, dest, srcProperty) => srcProperty != null)
                 );
 
-
             CreateMap<Cart, CartReadDTO>();
             CreateMap<CartCreateDTO, Cart>();
             CreateMap<CartUpdateDTO, Cart>()
                 .ForAllMembers(opts =>
                     opts.Condition((src, dest, srcProperty) => srcProperty != null)
                 );
-
 
             CreateMap<Users, UserReadDto>();
             CreateMap<UserCreateDto, Users>();
@@ -54,13 +52,11 @@ namespace src.Utils
             CreateMap<AdminUpdateDto, Users>();
             CreateMap<Users, UserProfileDto>();
 
-
             CreateMap<Address, AddressReadDto>()
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId.ToString())); // Con
             CreateMap<AddressCreateDto, Address>();
             CreateMap<AddressUpdateDto, Address>()
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
-
 
             CreateMap<Payment, PaymentReadDto>();
             CreateMap<PaymentCreateDto, Payment>();
@@ -69,29 +65,28 @@ namespace src.Utils
                     options.Condition((src, dest, srcProperty) => srcProperty != null)
                 );
 
-
             CreateMap<Gemstones, GemstoneReadDto>();
             CreateMap<GemstoneCreateDto, Gemstones>();
             CreateMap<GemstoneUpdateDto, Gemstones>()
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
-
 
             CreateMap<Jewelry, JewelryDTO.JewelryReadDto>();
             CreateMap<JewelryCreateDto, Jewelry>();
             CreateMap<JewelryUpdateDto, Jewelry>()
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
 
-
             CreateMap<Order, OrderReadDto>();
             CreateMap<OrderCreateDto, Order>();
             CreateMap<OrderUpdateDto, Order>()
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
 
-
-            CreateMap<OrderGemstone, OrderGemstoneReadDto>();
-            CreateMap<OrderGemstoneCreateDto, OrderGemstone>();
-            CreateMap<OrderGemstoneUpdateDto, OrderGemstone>()
+            CreateMap<SingleProduct, SingleProductReadDto>();
+            CreateMap<SingleProductCreateDto, SingleProduct>();
+            CreateMap<SingleProductUpdateDto, SingleProduct>()
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+
+            CreateMap<GemstoneShape, GemstoneShapeReadDTO>();
+            CreateMap<GemstoneShapeCreateDTO, GemstoneShape>();
         }
     } // end class
 } // end namespace

@@ -19,22 +19,23 @@ namespace src.Repository
             _order = databaseContext.Set<Order>();
         }
 
-
         public async Task<List<Order>> GetAllAsync()
         {
             var orders = await _order
-                .Include(o => o.OrderProducts)
-                    .ThenInclude(op => op.Jewelry)
-                .Include(o => o.OrderProducts)
-                    .ThenInclude(op => op.Gemstone)
+                .Include(o => o.SingleProduct)
+                .ThenInclude(op => op.Jewelry)
+                .Include(o => o.SingleProduct)
+                .ThenInclude(op => op.GemstoneShape)
                 .ToListAsync();
             // Calculate FinalPrice for each order product
             foreach (var order in orders)
             {
-                foreach (var product in order.OrderProducts)
+                foreach (var product in order.SingleProduct)
                 {
                     product.CalculateFinalPrice();
-                    Console.WriteLine($"OrderProductId: {product.OrderProductId}, FinalPrice: {product.FinalPrice}");
+                    Console.WriteLine(
+                        $"OrderProductId: {product.SingleProductId}, FinalPrice: {product.FinalPrice}"
+                    );
                 }
             }
             return orders;
@@ -45,18 +46,19 @@ namespace src.Repository
             await _order.AddAsync(newOrder);
             await _databaseContext.SaveChangesAsync();
 
-            await _order.Entry(newOrder).Collection(o => o.OrderProducts).LoadAsync();
+            await _order.Entry(newOrder).Collection(o => o.SingleProduct).LoadAsync();
 
-            foreach (var detail in newOrder.OrderProducts)
+            foreach (var detail in newOrder.SingleProduct)
             {
                 await _databaseContext.Entry(detail).Reference(od => od.Jewelry).LoadAsync();
-                await _databaseContext.Entry(detail).Reference(od => od.Gemstone).LoadAsync();
+                await _databaseContext.Entry(detail).Reference(od => od.GemstoneShape).LoadAsync();
 
                 detail.CalculateFinalPrice();
             }
 
             return newOrder;
         }
+
         // 🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧 Under construction 🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧
         //     public async Task<List<Order>> GetAllAsync()
         //     {

@@ -25,7 +25,7 @@ namespace src.Repository
             await _databaseContext.SaveChangesAsync();
             return newCart;
         }
-        
+
         // 🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧 Under construction 🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧
         // Get All carts Asynchronously
         // public async Task<List<Cart>> GetAllAsync()
@@ -37,11 +37,11 @@ namespace src.Repository
         {
             return await _cart
                 .Include(o => o.Orders)
-                .ThenInclude(op => op.OrderProducts)
+                .ThenInclude(op => op.SingleProduct)
                 .ThenInclude(op => op.Jewelry)
                 .Include(o => o.Orders)
-                .ThenInclude(op => op.OrderProducts)
-                .ThenInclude(op => op.Gemstone)
+                .ThenInclude(op => op.SingleProduct)
+                .ThenInclude(op => op.GemstoneShape)
                 .ToListAsync();
         }
 
@@ -55,11 +55,11 @@ namespace src.Repository
             return await _cart
                 .Where(c => c.UserId == userId)
                 .Include(o => o.Orders)
-                .ThenInclude(op => op.OrderProducts)
+                .ThenInclude(op => op.SingleProduct)
                 .ThenInclude(op => op.Jewelry)
                 .Include(o => o.Orders)
-                .ThenInclude(op => op.OrderProducts)
-                .ThenInclude(op => op.Gemstone)
+                .ThenInclude(op => op.SingleProduct)
+                .ThenInclude(op => op.GemstoneShape)
                 .ToListAsync();
         }
 
