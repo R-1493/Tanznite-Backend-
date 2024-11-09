@@ -36,12 +36,14 @@ namespace src.Controllers
 
             var userGuid = new Guid(userIdClaim);
 
-            // Directly query the database to find the user's address
             var address = await _databaseContext.Addresses.FirstOrDefaultAsync(a =>
                 a.UserId == userGuid
             );
 
-            // Use the found addressId
+            if (address == null)
+            {
+                return BadRequest("the user dosnt have address");
+            }
             var addressId = address.AddressId;
 
             return await _orderService.CreateOnAsync(userGuid, createDto, addressId);

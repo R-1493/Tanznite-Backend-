@@ -27,9 +27,42 @@ namespace src.Repository
             return newGemstone;
         }
 
+        public async Task<List<Gemstones>> GetAllAsync(PaginationOptions options)
+        {
+            var gemstones = _gemstones.ToList();
+
+            if (!string.IsNullOrEmpty(options.Search))
+            {
+                gemstones = gemstones
+                    .Where(p =>
+                        p.GemstoneType.Contains(options.Search, StringComparison.OrdinalIgnoreCase)
+                    )
+                    .ToList();
+            }
+
+            // min price
+            if (options.MinPrice.HasValue && options.MinPrice > 0)
+            {
+                gemstones = gemstones.Where(p => p.GemstonePrice >= options.MinPrice).ToList();
+            }
+            // max price
+            if (options.MinPrice.HasValue && options.MaxPrice < decimal.MaxValue)
+            {
+                gemstones = gemstones.Where(p => p.GemstonePrice <= options.MaxPrice).ToList();
+            }
+            gemstones = gemstones.Skip(options.Offset).Take(options.Limit).ToList();
+
+            return gemstones;
+        }
+
         public async Task<List<Gemstones>> GetAllAsync()
         {
             return await _gemstones.ToListAsync();
+        }
+
+        public async Task<int> CountAsync()
+        {
+            return await _databaseContext.Set<Gemstones>().CountAsync();
         }
 
         public async Task<Gemstones?> GetByIdAsync(Guid GemstoneId)
@@ -61,6 +94,5 @@ namespace src.Repository
                 .Take(paginationOptions.Limit)
                 .ToListAsync();
         }
-
     }
 }

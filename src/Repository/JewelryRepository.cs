@@ -27,9 +27,42 @@ namespace src.Repository
             return newJewelryItem;
         }
 
+        public async Task<List<Jewelry>> GetAllAsync(PaginationOptions options)
+        {
+            var jewelry = _jewelry.ToList();
+
+            if (!string.IsNullOrEmpty(options.Search))
+            {
+                jewelry = jewelry
+                    .Where(p =>
+                        p.JewelryName.Contains(options.Search, StringComparison.OrdinalIgnoreCase)
+                    )
+                    .ToList();
+            }
+
+            // min price
+            if (options.MinPrice.HasValue && options.MinPrice > 0)
+            {
+                jewelry = jewelry.Where(p => p.JewelryPrice >= options.MinPrice).ToList();
+            }
+            // max price
+            if (options.MinPrice.HasValue && options.MaxPrice < decimal.MaxValue)
+            {
+                jewelry = jewelry.Where(p => p.JewelryPrice <= options.MaxPrice).ToList();
+            }
+            jewelry = jewelry.Skip(options.Offset).Take(options.Limit).ToList();
+
+            return jewelry;
+        }
+
         public async Task<List<Jewelry>> GetAllAsync()
         {
             return await _jewelry.ToListAsync();
+        }
+
+        public async Task<int> CountAsync()
+        {
+            return await _databaseContext.Set<Jewelry>().CountAsync();
         }
 
         public async Task<Jewelry?> GetByIdAsync(Guid JewelryId)
@@ -66,7 +99,10 @@ namespace src.Repository
         // Implements pagination as well.
         // Uses AsQueryable for building the query dynamically.
         // Filtering and Sorting
-        public async Task<List<src.Entity.Jewelry>> GetAllByFilteringAsync(FilterationOptions jewelryFilter, PaginationOptions paginationOptions)
+        public async Task<List<src.Entity.Jewelry>> GetAllByFilteringAsync(
+            FilterationOptions jewelryFilter,
+            PaginationOptions paginationOptions
+        )
         {
             var query = _databaseContext.Jewelry.AsQueryable();
 

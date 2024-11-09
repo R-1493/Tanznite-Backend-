@@ -28,10 +28,21 @@ namespace src.Services.Gemstone
             return _mapper.Map<src.Entity.Gemstones, GemstoneReadDto>(createdGemstone);
         }
 
+        public async Task<List<GemstoneReadDto>> GetAllAsync(PaginationOptions Options)
+        {
+            var gemstones = await _gemstonesRepo.GetAllAsync(Options);
+            return _mapper.Map<List<src.Entity.Gemstones>, List<GemstoneReadDto>>(gemstones);
+        }
+
         public async Task<List<GemstoneReadDto>> GetAllAsync()
         {
-            var Gemstones = await _gemstonesRepo.GetAllAsync();
-            return _mapper.Map<List<src.Entity.Gemstones>, List<GemstoneReadDto>>(Gemstones);
+            var gemstonesList = await _gemstonesRepo.GetAllAsync();
+            return _mapper.Map<List<Gemstones>, List<GemstoneReadDto>>(gemstonesList);
+        }
+
+        public async Task<int> CountGemstonesAsync()
+        {
+            return await _gemstonesRepo.CountAsync();
         }
 
         public async Task<GemstoneReadDto> GetByIdAsync(Guid GemstoneId)
@@ -75,7 +86,5 @@ namespace src.Services.Gemstone
             }
             return _mapper.Map<List<src.Entity.Gemstones>, List<GemstoneReadDto>>(gemstonesList);
         }
-
-
     }
 }

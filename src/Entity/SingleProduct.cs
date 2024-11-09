@@ -15,12 +15,8 @@ namespace src.Entity
         public decimal FinalPrice { get; set; }
         public int Quantity { get; set; }
         public Guid JewelryId { get; set; }
-
-        [ForeignKey("JewelryId")]
         public Jewelry Jewelry { get; set; }
         public Guid GemstoneShapeId { get; set; }
-
-        [ForeignKey("GemstoneShapeId")]
         public GemstoneShape GemstoneShape { get; set; }
 
         public void CalculateFinalPrice()

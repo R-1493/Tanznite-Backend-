@@ -18,6 +18,12 @@ namespace src.DTO
             public string Description { get; set; }
         }
 
+        public class JewelryListDto
+        {
+            public List<JewelryReadDto> Jewelry { get; set; }
+            public int TotalCount { get; set; }
+        }
+
         public class JewelryReadDto
         {
             public Guid JewelryId { get; set; }

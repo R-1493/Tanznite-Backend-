@@ -24,10 +24,18 @@ namespace src.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<List<GemstoneReadDto>>> GetAll()
+        public async Task<ActionResult<List<GemstoneListDto>>> GetAll(
+            [FromQuery] PaginationOptions options
+        )
         {
-            var gemstonesList = await _gemstoneService.GetAllAsync();
-            return Ok(gemstonesList);
+            var gemstonesList = await _gemstoneService.GetAllAsync(options);
+            var totalCount = await _gemstoneService.CountGemstonesAsync();
+            var response = new GemstoneListDto
+            {
+                Gemstones = gemstonesList,
+                TotalCount = totalCount,
+            };
+            return Ok(response);
         }
 
         [AllowAnonymous]
@@ -83,6 +91,5 @@ namespace src.Controllers
             var gemstonesList = await _gemstoneService.GetAllBySearchAsync(paginationOptions);
             return Ok(gemstonesList);
         }
-
     }
 }

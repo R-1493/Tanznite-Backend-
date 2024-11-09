@@ -6,6 +6,7 @@ using AutoMapper;
 using src.DTO;
 using src.Repository;
 using src.Services.GemstoneShape;
+using src.Utils;
 using static src.DTO.GemstoneShapeDTO;
 
 namespace Services.GemstoneShape
@@ -30,9 +31,25 @@ namespace Services.GemstoneShape
             return _mapper.Map<src.Entity.GemstoneShape, GemstoneShapeReadDTO>(createdGemstone);
         }
 
-        public Task<GemstoneShapeReadDTO> GetAllAsync()
+        public async Task<int> CountGemstonesShapAsync()
         {
-            throw new NotImplementedException();
+            return await _gemstonesShapeRepo.CountAsync();
+        }
+
+        public async Task<List<GemstoneShapeReadDTO>> GetAllAsync(PaginationOptions Options)
+        {
+            var gemstonesSahpe = await _gemstonesShapeRepo.GetAllAsync(Options);
+            return _mapper.Map<List<src.Entity.GemstoneShape>, List<GemstoneShapeReadDTO>>(
+                gemstonesSahpe
+            );
+        }
+
+        public async Task<List<GemstoneShapeReadDTO>> GetAllAsync()
+        {
+            var gemstonesSahpeList = await _gemstonesShapeRepo.GetAllAsync();
+            return _mapper.Map<List<src.Entity.GemstoneShape>, List<GemstoneShapeReadDTO>>(
+                gemstonesSahpeList
+            );
         }
     }
 }

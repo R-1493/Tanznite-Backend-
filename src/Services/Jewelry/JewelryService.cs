@@ -28,10 +28,21 @@ namespace src.Services.Jewelry
             return _mapper.Map<src.Entity.Jewelry, JewelryReadDto>(createdJewelry);
         }
 
+        public async Task<List<JewelryReadDto>> GetAllAsync(PaginationOptions Options)
+        {
+            var jewelryItems = await _jewelryRepo.GetAllAsync(Options);
+            return _mapper.Map<List<src.Entity.Jewelry>, List<JewelryReadDto>>(jewelryItems);
+        }
+
         public async Task<List<JewelryReadDto>> GetAllAsync()
         {
-            var jewelryItems = await _jewelryRepo.GetAllAsync();
-            return _mapper.Map<List<src.Entity.Jewelry>, List<JewelryReadDto>>(jewelryItems);
+            var jewelryList = await _jewelryRepo.GetAllAsync();
+            return _mapper.Map<List<src.Entity.Jewelry>, List<JewelryReadDto>>(jewelryList);
+        }
+
+        public async Task<int> CountJewelryAsync()
+        {
+            return await _jewelryRepo.CountAsync();
         }
 
         public async Task<JewelryReadDto> GetByIdAsync(Guid JewelryId)
@@ -74,7 +85,6 @@ namespace src.Services.Jewelry
             return isDeleted;
         }
 
-
         public async Task<List<JewelryReadDto>> GetAllBySearchAsync(
             PaginationOptions paginationOptions
         )
@@ -87,20 +97,31 @@ namespace src.Services.Jewelry
             return _mapper.Map<List<src.Entity.Jewelry>, List<JewelryReadDto>>(jewelryList);
         }
 
-        public async Task<List<JewelryReadDto>> GetAllByFilterationAsync(FilterationOptions jewelryFilter, PaginationOptions paginationOptions)
+        public async Task<List<JewelryReadDto>> GetAllByFilterationAsync(
+            FilterationOptions jewelryFilter,
+            PaginationOptions paginationOptions
+        )
         {
-            var jewelryList = await _jewelryRepo.GetAllByFilteringAsync(jewelryFilter, paginationOptions);
+            var jewelryList = await _jewelryRepo.GetAllByFilteringAsync(
+                jewelryFilter,
+                paginationOptions
+            );
 
             // Sorting logic based on SortBy and IsAscending from jewelryFilter
             if (!string.IsNullOrEmpty(jewelryFilter.SortBy))
             {
                 jewelryList = jewelryFilter.IsAscending
                     ? jewelryList.OrderBy(j => GetSortValue(j, jewelryFilter.SortBy)).ToList()
-                    : jewelryList.OrderByDescending(j => GetSortValue(j, jewelryFilter.SortBy)).ToList();
+                    : jewelryList
+                        .OrderByDescending(j => GetSortValue(j, jewelryFilter.SortBy))
+                        .ToList();
             }
 
             // Pagination logic using Limit and Offset from paginationOptions
-            jewelryList = jewelryList.Skip(paginationOptions.Offset).Take(paginationOptions.Limit).ToList();
+            jewelryList = jewelryList
+                .Skip(paginationOptions.Offset)
+                .Take(paginationOptions.Limit)
+                .ToList();
 
             return _mapper.Map<List<src.Entity.Jewelry>, List<JewelryReadDto>>(jewelryList);
         }
@@ -112,10 +133,8 @@ namespace src.Services.Jewelry
                 "Price" => jewelry.JewelryPrice,
                 "Name" => jewelry.JewelryName,
                 "Type" => jewelry.JewelryType,
-                _ => jewelry.JewelryType
+                _ => jewelry.JewelryType,
             };
         }
-
     }
 }
-

@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using src.Services.category;
-using static src.DTO.CategoryDTO;
 using src.Utils;
+using static src.DTO.CategoryDTO;
 
 namespace src.Controllers
 {
@@ -39,7 +39,7 @@ namespace src.Controllers
             var categoryUpdated = await _categoryService.UpdateOneAsync(id, updateDto);
             if (categoryUpdated == null)
             {
-                return NotFound(); 
+                return NotFound();
             }
             return Ok(categoryUpdated);
         }
@@ -57,7 +57,7 @@ namespace src.Controllers
             var category = await _categoryService.GetByIdAsync(id);
             if (category == null)
             {
-                return NotFound(); 
+                return NotFound();
             }
             return Ok(category);
         }
@@ -69,19 +69,23 @@ namespace src.Controllers
             var categoryDeleted = await _categoryService.DeleteOneAsync(CategoryId);
             if (categoryDeleted == false)
             {
-                return NotFound(); 
+                return NotFound();
             }
-            return NoContent(); 
+            return NoContent();
         }
-    
 
         [AllowAnonymous]
-        [HttpGet("Filter")] 
-        public async Task<ActionResult<List<CategoryReadDto>>> FilterJewelry([FromQuery] CategoryFilterationOptions categoryFilter, [FromQuery] PaginationOptions paginationOptions)
+        [HttpGet("Filter")]
+        public async Task<ActionResult<List<CategoryReadDto>>> FilterJewelry(
+            [FromQuery] CategoryFilterationOptions categoryFilter,
+            [FromQuery] PaginationOptions paginationOptions
+        )
         {
-            var categoryN = await _categoryService.GetAllByFilterationAsync(categoryFilter, paginationOptions);
+            var categoryN = await _categoryService.GetAllByFilterationAsync(
+                categoryFilter,
+                paginationOptions
+            );
             return Ok(categoryN);
         }
-
     } // end class
 } // end namespace

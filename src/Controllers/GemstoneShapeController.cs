@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using src.DTO;
 using src.Services.GemstoneShape;
+using src.Utils;
 using static src.DTO.GemstoneShapeDTO;
 
 namespace src.Controllers
@@ -23,14 +24,25 @@ namespace src.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<List<GemstoneShapeReadDTO>>> GetAll()
+        public async Task<ActionResult<List<GemstoneShapeReadDTO>>> GetAll(
+            [FromQuery] PaginationOptions options
+        )
         {
-            var gemstonesList = await _gemstoneShapeService.GetAllAsync();
-            return Ok(gemstonesList);
+            var gemstonesShapeList = await _gemstoneShapeService.GetAllAsync(options);
+            var totalCount = await _gemstoneShapeService.CountGemstonesShapAsync();
+            var response = new GemstoneShapListDto
+            {
+                GemstonesShape = gemstonesShapeList,
+                TotalCount = totalCount,
+            };
+            return Ok(response);
         }
+
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<ActionResult<GemstoneShapeReadDTO>> CreateOne(GemstoneShapeCreateDTO createDto)
+        public async Task<ActionResult<GemstoneShapeReadDTO>> CreateOne(
+            GemstoneShapeCreateDTO createDto
+        )
         {
             var newGemstone = await _gemstoneShapeService.CreateOneAsync(createDto);
             return Ok(newGemstone);

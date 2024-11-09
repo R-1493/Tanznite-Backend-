@@ -23,18 +23,32 @@ namespace src.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<JewelryReadDto>> CreateOne(JewelryCreateDto createDto)
+        public async Task<ActionResult<JewelryReadDto>> CreateOne(
+            [FromBody] JewelryCreateDto createDto
+        )
         {
             var nweJewelry = await _jewelryService.CreateOneAsync(createDto);
             return Ok(nweJewelry);
         }
+        
+        [AllowAnonymous]
+        [HttpGet("getAll")]
+        public async Task<ActionResult<List<JewelryReadDto>>> GetAll()
+        {
+            var jewelriesList = await _jewelryService.GetAllAsync();
+            return Ok(jewelriesList);
+        }
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<List<JewelryReadDto>>> GetAll()
+        public async Task<ActionResult<List<JewelryReadDto>>> GetAll(
+            [FromQuery] PaginationOptions options
+        )
         {
-            var jewelryList = await _jewelryService.GetAllAsync();
-            return Ok(jewelryList);
+            var jewelryList = await _jewelryService.GetAllAsync(options);
+            var totalCount = await _jewelryService.CountJewelryAsync();
+            var response = new JewelryListDto { Jewelry = jewelryList, TotalCount = totalCount };
+            return Ok(response);
         }
 
         [AllowAnonymous]

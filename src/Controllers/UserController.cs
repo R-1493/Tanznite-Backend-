@@ -43,7 +43,7 @@ namespace src.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<List<UserReadDto>>> GetAllAsync()
         {
             var users = await _userService.GetAllAsync();
@@ -53,6 +53,19 @@ namespace src.Controllers
                 return NotFound("No users found.");
             }
             return Ok(users);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("{UserId}")]
+        public async Task<ActionResult> DeleteOne(Guid UserId)
+        {
+            var result = await _userService.DeleteOneAsync(UserId);
+            if (!result)
+            {
+                return NotFound("User not found.");
+            }
+
+            return NoContent();
         }
 
         [HttpGet("Profile")]
@@ -70,7 +83,7 @@ namespace src.Controllers
             return Ok(user);
         }
 
-        [HttpPut("UpdateProfile")]
+        [HttpPatch("UpdateProfile")]
         [Authorize]
         public async Task<ActionResult<UserProfileDto>> UpdateProfileAsync(UserProfileDto updateDto)
         {

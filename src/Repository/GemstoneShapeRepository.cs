@@ -28,6 +28,39 @@ namespace src.Repository
             return newGemstoneShape;
         }
 
+        public async Task<List<GemstoneShape>> GetAllAsync(PaginationOptions options)
+        {
+            var gemstoneShap = _gemstoneShap.ToList();
+            if (!string.IsNullOrEmpty(options.Search))
+            {
+                gemstoneShap = gemstoneShap
+                    .Where(p =>
+                        p.ShapeName.Contains(options.Search, StringComparison.OrdinalIgnoreCase)
+                    )
+                    .ToList();
+            }
+            if (options.MinPrice.HasValue && options.MinPrice > 0)
+            {
+                gemstoneShap = gemstoneShap
+                    .Where(p => p.GemstoneShapPrice >= options.MinPrice)
+                    .ToList();
+            }
+            // max price
+            if (options.MinPrice.HasValue && options.MaxPrice < decimal.MaxValue)
+            {
+                gemstoneShap = gemstoneShap
+                    .Where(p => p.GemstoneShapPrice <= options.MaxPrice)
+                    .ToList();
+            }
+            gemstoneShap = gemstoneShap.Skip(options.Offset).Take(options.Limit).ToList();
+            return gemstoneShap;
+        }
+
+        public async Task<int> CountAsync()
+        {
+            return await _databaseContext.Set<GemstoneShape>().CountAsync();
+        }
+
         public async Task<List<GemstoneShape>> GetAllAsync()
         {
             return await _gemstoneShap.ToListAsync();

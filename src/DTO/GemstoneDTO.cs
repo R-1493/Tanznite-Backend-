@@ -17,8 +17,12 @@ namespace src.DTO
             public decimal GemstonePrice { get; set; }
             public string GemstoneDescription { get; set; }
             public Guid CategoryId { get; set; }
+        }
 
-
+        public class GemstoneListDto
+        {
+            public List<GemstoneReadDto> Gemstones { get; set; }
+            public int TotalCount { get; set; }
         }
 
         public class GemstoneReadDto
@@ -43,7 +47,6 @@ namespace src.DTO
             public string GemstoneClarity { get; set; }
             public decimal GemstonePrice { get; set; }
             public string GemstoneDescription { get; set; }
-
         }
     }
 }

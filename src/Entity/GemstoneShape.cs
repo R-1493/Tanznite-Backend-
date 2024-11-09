@@ -10,7 +10,7 @@ namespace src.Entity
         public Guid GemstoneShapeId { get; set; }
         public string ShapeName { get; set; }
         public decimal GemstoneShapPrice { get; set; }
-
+        public string GemstoneImage { get; set; }
         public decimal GemstoneShapWeight { get; set; }
         public string GemstoneShapeInfo { get; set; }
         public Guid GemstoneId { get; set; }

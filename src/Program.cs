@@ -2,6 +2,8 @@ using System.Text;
 using System.Text.Json;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -25,13 +27,19 @@ using src.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllersWithViews();
+
 var dataSourceBuilder = new NpgsqlDataSourceBuilder(
     builder.Configuration.GetConnectionString("Local")
 );
 dataSourceBuilder.MapEnum<Role>();
+
+var dataSource = dataSourceBuilder.Build();
+builder.Services.AddSingleton(dataSource);
+
 builder.Services.AddDbContext<DatabaseContext>(options =>
 {
-    options.UseNpgsql(dataSourceBuilder.Build());
+    options.UseNpgsql(dataSource);
 });
 
 builder.Services.AddAutoMapper(typeof(MapperProfile).Assembly);
@@ -108,6 +116,38 @@ builder
         };
     });
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+builder.Services.AddDbContext<DatabaseContext>(options =>
+{
+    options
+        .UseNpgsql(builder.Configuration.GetConnectionString("Local"))
+        .EnableSensitiveDataLogging()
+        .ConfigureWarnings(warnings =>
+            warnings.Ignore(CoreEventId.ManyServiceProvidersCreatedWarning)
+        );
+});
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        name: MyAllowSpecificOrigins,
+        policy =>
+        {
+            policy
+                .WithOrigins("http://localhost:3000/")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .SetIsOriginAllowed((Host) => true)
+                .AllowCredentials();
+        }
+    );
+});
+
+builder.Services.AddAuthorization(Options =>
+{
+    Options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+});
+
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -136,6 +176,7 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
+app.UseCors(MyAllowSpecificOrigins);
 app.UseMiddleware<ErrorHandlerMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
@@ -147,5 +188,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.MapGet("/", () => "Hello ");
 
 app.Run();

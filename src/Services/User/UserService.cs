@@ -45,8 +45,8 @@ namespace src.Services.User
 
                 users.Password = hashedPassword;
                 users.Salt = salt;
-                // users.Role = Role.Customer;
-                users.Role = Role.Admin;
+                users.Role = Role.Customer;
+                // users.Role = Role.Admin;
 
                 var userCreated = await _userRepo.CreateOnAsync(users);
                 return _mapper.Map<Users, UserReadDto>(userCreated);
@@ -103,9 +103,9 @@ namespace src.Services.User
                 return null;
             }
 
-            foundUser.Name = updateDto.Name;
-            foundUser.Email = updateDto.Email;
-            foundUser.PhoneNumber = updateDto.PhoneNumber;
+            foundUser.Name = updateDto.Name ?? foundUser.Name;
+            foundUser.Email = updateDto.Email ?? foundUser.Email;
+            foundUser.PhoneNumber = updateDto.PhoneNumber ?? foundUser.PhoneNumber;
             if (!string.IsNullOrEmpty(updateDto.Password))
             {
                 PasswordUtils.HashPassword(
