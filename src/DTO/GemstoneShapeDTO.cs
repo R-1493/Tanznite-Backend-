@@ -36,5 +36,15 @@ namespace src.DTO
             public string GemstoneShapeInfo { get; set; }
             public Guid GemstoneId { get; set; }
         }
+
+        public class GemstoneShapeUpdateDto
+        {
+            public string? ShapeName { get; set; }
+            public string? GemstoneImage { get; set; }
+            public decimal? GemstoneShapPrice { get; set; }
+            public decimal? GemstoneShapWeight { get; set; }
+            public string? GemstoneShapeInfo { get; set; }
+            public Guid? GemstoneId { get; set; }
+        }
     }
 }

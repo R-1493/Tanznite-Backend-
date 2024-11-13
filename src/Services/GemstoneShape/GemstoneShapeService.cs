@@ -51,5 +51,35 @@ namespace Services.GemstoneShape
                 gemstonesSahpeList
             );
         }
+
+        public async Task<bool> UpdateOneAsync(
+            Guid gemstoneShapeId,
+            GemstoneShapeUpdateDto updateDto
+        )
+        {
+            var foundGemstoneShape = await _gemstonesShapeRepo.GetByIdAsync(gemstoneShapeId);
+
+            if (foundGemstoneShape == null)
+            {
+                return false;
+            }
+
+            _mapper.Map(updateDto, foundGemstoneShape);
+
+            return await _gemstonesShapeRepo.UpdateOnAsync(foundGemstoneShape);
+        }
+
+        public async Task<bool> DeleteOneAsync(Guid gemstoneShapeId)
+        {
+            var foundGemstoneShape = await _gemstonesShapeRepo.GetByIdAsync(gemstoneShapeId);
+            if (foundGemstoneShape == null)
+            {
+                throw CustomException.NotFound(
+                    $"Jewelry with ID {gemstoneShapeId} not found for deletion"
+                );
+            }
+            bool isDeleted = await _gemstonesShapeRepo.DeleteOnAsync(foundGemstoneShape);
+            return isDeleted;
+        }
     }
 }

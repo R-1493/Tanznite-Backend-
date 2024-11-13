@@ -36,11 +36,11 @@ namespace src.DTO
 
         public class JewelryUpdateDto
         {
-            public string JewelryName { get; set; }
-            public string JewelryType { get; set; }
-            public decimal JewelryPrice { get; set; }
-            public string JewelryImage { get; set; }
-            public string Description { get; set; }
+            public string? JewelryName { get; set; }
+            public string? JewelryType { get; set; }
+            public decimal? JewelryPrice { get; set; }
+            public string? JewelryImage { get; set; }
+            public string? Description { get; set; }
         }
     }
 }

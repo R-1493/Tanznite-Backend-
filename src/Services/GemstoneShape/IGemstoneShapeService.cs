@@ -15,7 +15,11 @@ namespace src.Services.GemstoneShape
 
         // Task<GemstoneShapeReadDTO> GetByIdAsync(Guid id);
         Task<int> CountGemstonesShapAsync();
+        Task<bool> DeleteOneAsync(Guid gemstoneShapeId);
 
+        Task<bool> UpdateOneAsync(Guid GemstoneShapeId, GemstoneShapeUpdateDto updateDto);
         Task<List<GemstoneShapeReadDTO>> GetAllAsync();
     }
+
+    public class GemstoneShapeUpdateDTO { }
 }

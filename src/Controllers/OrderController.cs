@@ -42,7 +42,7 @@ namespace src.Controllers
 
             if (address == null)
             {
-                return BadRequest("the user dosnt have address");
+                return BadRequest("the user don't have address");
             }
             var addressId = address.AddressId;
 

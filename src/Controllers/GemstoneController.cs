@@ -59,7 +59,7 @@ namespace src.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPut("{GemstoneId}")]
+        [HttpPatch("{GemstoneId}")]
         public async Task<ActionResult> UpdateOne(Guid GemstoneId, GemstoneUpdateDto updateDto)
         {
             var gemstoneUpdated = await _gemstoneService.UpdateOneAsync(GemstoneId, updateDto);

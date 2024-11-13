@@ -47,5 +47,35 @@ namespace src.Controllers
             var newGemstone = await _gemstoneShapeService.CreateOneAsync(createDto);
             return Ok(newGemstone);
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPatch("{gemstoneShapeId}")]
+        public async Task<ActionResult> UpdateOne(
+            Guid gemstoneShapeId,
+            GemstoneShapeUpdateDto updateDto
+        )
+        {
+            var gemstoneUpdated = await _gemstoneShapeService.UpdateOneAsync(
+                gemstoneShapeId,
+                updateDto
+            );
+            if (gemstoneUpdated == null)
+            {
+                return NotFound();
+            }
+            return Ok();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("{gemstoneShapeId}")]
+        public async Task<ActionResult> DeleteOne(Guid gemstoneShapeId)
+        {
+            var gemstoneShapeDeleted = await _gemstoneShapeService.DeleteOneAsync(gemstoneShapeId);
+            if (gemstoneShapeDeleted == false)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
     }
 }

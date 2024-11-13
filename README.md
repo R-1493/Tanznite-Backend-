@@ -16,11 +16,13 @@ This project is a backend solution for an e-commerce platform dedicated to selli
   - Add Address Details, Update it and Delete it
   - Create Review, Update it and Delete it
 - **Product Management**
-  - Admin Create Gemstone & Jewelry
-  - Admin Update Gemstone & Jewelry
-  - Admin Delete Gemstone & Jewelry
-  - Customer have a Filter Search By Name, Min Price, Max Price for both the Gemstone & Jewelry
-  - Customer can Search with Pagination for both the Gemstone & Jewelry
+
+  - Admin Create Gemstone & GemstoneShape & Jewelry
+  - Admin Update Gemstone & GemstoneShape & Jewelry
+  - Admin Delete Gemstone & GemstoneShape & Jewelry
+  - Customer have a Filter Search By Name, Min Price, Max Price for both the Gemstone & GemstoneShape & Jewelry
+  - Customer can Search with Pagination for both the Gemstone & Shape & Jewelry
+
 - **Category Management**
   - Admin Create Category
   - Admin Update Category
@@ -132,16 +134,26 @@ The API will be available at: `http://localhost:5125`
 - **POST** `/api/v1/Gemstone` - Create a new Gemstone.
 - **GET** `/api/v1/Gemstone` - View all Gemstones.
 - **GET** `/api/v1/Gemstone/{GemstoneId}` - View Gemstone by Id.
-- **PUT** `/api/v1/Gemstone/{GemstoneId}` - Update Gemstone by Id.
+- **Patch** `/api/v1/Gemstone/{GemstoneId}` - Update Gemstone by Id.
 - **DELETE** `/api/v1/Gemstone/{GemstoneId}` - Delete Gemstone by Id.
 - **GET** `/api/v1/Gemstone/Search` - Searsh with pagination for Gemstone.
+- **GET** `/api/v1/Gemstone/Filter` - Filter for Gemstone by MinPrice/MaxPrice.
+
+### Gemstone Shape
+
+- **POST** `/api/v1/GemstoneShape` - Create a new Gemstone Shape.
+- **GET** `/api/v1/GemstoneShape` - View all Gemstone Shape.
+- **Patch** `/api/v1/GemstoneShape/{gemstoneShapeId}` - Update Gemstone Shape by Id.
+- **DELETE** `/api/v1/GemstoneShape/{gemstoneShapeId}` - Delete Gemstone Shape by Id.
+- **GET** `/api/v1/GemstoneShape/Search` - Searsh with pagination for Gemstone Shape.
+- **GET** `/api/v1/GemstoneShape/Filter` - Filter for Gemstone Shape by MinPrice/MaxPrice.
 
 ### Jewelry
 
 - **POST** `/api/v1/Jewelry` - Create a new Jewelry.
 - **GET** `/api/v1/Jewelry` - View all Jewelry.
 - **GET** `/api/v1/Jewelry/{JewelryId}` - View Jewelry by Id.
-- **PUT** `/api/v1/Jewelry/{JewelryId}` - Update Jewelry by Id.
+- **Patch** `/api/v1/Jewelry/{JewelryId}` - Update Jewelry by Id.
 - **DELETE** `/api/v1/Jewelry/{JewelryId}` - Delete Jewelry by Id.
 - **GET** `/api/v1/Jewelry/Search` - Searsh with pagination for Jewelry.
 - **GET** `/api/v1/Jewelry/Filter` - Filter for Jewelry by MinPrice/MaxPrice.
@@ -150,13 +162,6 @@ The API will be available at: `http://localhost:5125`
 
 - **POST** `/api/v1/Order` - Create a new Order.
 - **GET** `/api/v1/Order` - View all Orders.
-
-### Carts
-
-- **POST** `/api/v1/Carts` - Create a new Cart.
-- **GET** `/api/v1/Carts` - View Carts.
-- **GET** `/api/v1/Carts/{id}` - View Cart by Id.
-- **PUT** `/api/v1/Carts/{id}` - Update Cart Details.
 
 ### Payment
 

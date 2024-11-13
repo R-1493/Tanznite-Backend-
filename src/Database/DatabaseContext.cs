@@ -14,7 +14,6 @@ namespace src.Database
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Category> Category { get; set; }
         public DbSet<Review> Review { get; set; }
-        public DbSet<Cart> Cart { get; set; }
         public DbSet<Gemstones> Gemstones { get; set; }
         public DbSet<GemstoneShape> GemstoneShape { get; set; }
         public DbSet<Jewelry> Jewelry { get; set; }

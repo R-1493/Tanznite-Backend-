@@ -21,7 +21,6 @@ namespace src.DTO
             public Guid UserId { get; set; }
             public DateTime CreatedAt { get; set; }
             public Guid AddressId { get; set; }
-
             public List<SingleProductReadDto> SingleProduct { get; set; }
         }
 

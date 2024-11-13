@@ -30,7 +30,7 @@ namespace src.Controllers
             var nweJewelry = await _jewelryService.CreateOneAsync(createDto);
             return Ok(nweJewelry);
         }
-        
+
         [AllowAnonymous]
         [HttpGet("getAll")]
         public async Task<ActionResult<List<JewelryReadDto>>> GetAll()
@@ -64,7 +64,7 @@ namespace src.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPut("{JewelryId}")]
+        [HttpPatch("{JewelryId}")]
         public async Task<ActionResult<JewelryReadDto>> UpdateOne(
             Guid JewelryId,
             JewelryUpdateDto updateDto

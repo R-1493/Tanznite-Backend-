@@ -65,5 +65,24 @@ namespace src.Repository
         {
             return await _gemstoneShap.ToListAsync();
         }
+
+        public async Task<GemstoneShape?> GetByIdAsync(Guid gemstoneShapeId)
+        {
+            return await _gemstoneShap.FindAsync(gemstoneShapeId);
+        }
+
+        public async Task<bool> UpdateOnAsync(GemstoneShape updateGemstone)
+        {
+            _gemstoneShap.Update(updateGemstone);
+            await _databaseContext.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> DeleteOnAsync(GemstoneShape Gemstone)
+        {
+            _gemstoneShap.Remove(Gemstone);
+            await _databaseContext.SaveChangesAsync();
+            return true;
+        }
     }
 }

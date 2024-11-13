@@ -14,7 +14,6 @@ using src.Entity;
 using src.Middlewares;
 using src.Repository;
 using src.Services.Address;
-using src.Services.cart;
 using src.Services.category;
 using src.Services.Gemstone;
 using src.Services.GemstoneShape;
@@ -63,11 +62,6 @@ builder
 builder
     .Services.AddScoped<IReviewService, ReviewService>()
     .AddScoped<ReviewRepository, ReviewRepository>();
-
-// add DI services for cart
-builder
-    .Services.AddScoped<ICartService, CartService>()
-    .AddScoped<CartRepository, CartRepository>();
 
 ///Payment
 builder
