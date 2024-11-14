@@ -39,9 +39,6 @@ Here we presents the Entity Relationship Diagram (ERD) for the Gemstone Store we
 - **GemstoneType**: Type of gemstone (Burma Ruby, Kashmir Sapphire, Pink Rubies, etc.).
 - **GemstoneColor**: Color of the gemstone.
 - **GemstoneImage**: Image of the gemstone.
-- **GemstoneClarity**: Clarity rating of the gemstone.
-- **CarvingName**: Name of the carving (Oval, Heart, etc).
-- **Weight**: Weight of the gemstone.
 - **GemstoneDescription**: Description of the gemstone.
 - **GemstonePrice**: Price of the gemstone.
 - **CategoryId** (FK): References the Category table.
@@ -98,6 +95,17 @@ Here we presents the Entity Relationship Diagram (ERD) for the Gemstone Store we
 - **ReviewDate**: Date the review was written.
 - **Comment**: User's comments on the order.
 
+### 11.GemstoneShape
+
+- **GemstoneShapeId**: (PK): identifier for each Gemstone Shape.
+- **ShapeName**: Gemstone Shape Name .
+- **Gemstone Color**: Gemstone Color .
+- **GemstoneImage**: the url of the Image .
+- **Weight**: number of the weight .
+- **GemstoneDescription**: Description of the Gemstone.
+- **GemstonePrice**: the price of the Gemstone.
+- **GemstoneId** : (Fk):References the Gemstone table.
+
 ## Relationships
 
 - **User ↔ Address**: One-to-Many between User and Address. Each User can have Multiple Addresses.
@@ -119,4 +127,3 @@ Here we presents the Entity Relationship Diagram (ERD) for the Gemstone Store we
 - **User ↔ Review**: One-to-Many between User and Review. Each user can write multiple reviews.
 
 - **Order ↔ Review**: One-to-One between Review and Order. Each order can have one review associated with it.
-
