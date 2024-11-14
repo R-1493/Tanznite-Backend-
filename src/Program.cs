@@ -105,7 +105,7 @@ builder.Services.AddCors(options =>
                 .WithOrigins(
                     "http://localhost:3000",
                     "http://localhost:3001",
-                    "https://tanzanite.onrender.com/"
+                    "https://tanzanite.onrender.com"
                 )
                 .AllowAnyHeader()
                 .AllowAnyMethod()
