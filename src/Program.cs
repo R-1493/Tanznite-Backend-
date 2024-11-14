@@ -3,7 +3,6 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -106,7 +105,7 @@ builder.Services.AddCors(options =>
                 .WithOrigins(
                     "http://localhost:3000",
                     "http://localhost:3001",
-                    "https://sda-3-online-fe-repo-n4jl.onrender.com"
+                    "https://tanzanite.onrender.com/"
                 )
                 .AllowAnyHeader()
                 .AllowAnyMethod()
