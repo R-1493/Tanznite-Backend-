@@ -26,21 +26,26 @@ using src.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add services to the container.
 builder.Services.AddControllersWithViews();
 
+// add database service
 var dataSourceBuilder = new NpgsqlDataSourceBuilder(
     builder.Configuration.GetConnectionString("Local")
 );
 dataSourceBuilder.MapEnum<Role>();
-
-var dataSource = dataSourceBuilder.Build();
-builder.Services.AddSingleton(dataSource);
-
 builder.Services.AddDbContext<DatabaseContext>(options =>
 {
-    options.UseNpgsql(dataSource);
+    // options.UseNpgsql(dataSourceBuilder.Build());
+    options
+        .UseNpgsql(dataSourceBuilder.Build())
+        .EnableSensitiveDataLogging()
+        .ConfigureWarnings(warnings =>
+            warnings.Ignore(CoreEventId.ManyServiceProvidersCreatedWarning)
+        );
 });
 
+// add auto-mapper service
 builder.Services.AddAutoMapper(typeof(MapperProfile).Assembly);
 
 ///user
@@ -88,6 +93,30 @@ builder
     .Services.AddScoped<IGemstoneShapeService, GemstoneShapeService>()
     .AddScoped<GemstoneShapeRepository, GemstoneShapeRepository>();
 
+// CORS
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        name: MyAllowSpecificOrigins,
+        policy =>
+        {
+            policy
+                .WithOrigins(
+                    "http://localhost:3000",
+                    "http://localhost:3001",
+                    "https://sda-3-online-fe-repo-n4jl.onrender.com"
+                )
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+        }
+    );
+});
+
+// Add JWT Authentication
+// by default cookie
 builder
     .Services.AddAuthentication(options =>
     {
@@ -110,51 +139,32 @@ builder
         };
     });
 
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
-builder.Services.AddDbContext<DatabaseContext>(options =>
+// Add Authorization - later
+builder.Services.AddAuthorization(options =>
 {
-    options
-        .UseNpgsql(builder.Configuration.GetConnectionString("Local"))
-        .EnableSensitiveDataLogging()
-        .ConfigureWarnings(warnings =>
-            warnings.Ignore(CoreEventId.ManyServiceProvidersCreatedWarning)
-        );
-});
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(
-        name: MyAllowSpecificOrigins,
-        policy =>
-        {
-            policy
-                .WithOrigins("http://localhost:3000/")
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .SetIsOriginAllowed((Host) => true)
-                .AllowCredentials();
-        }
-    );
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
 });
 
-builder.Services.AddAuthorization(Options =>
-{
-    Options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
-});
-
+// add controllers
 builder.Services.AddControllers();
 
+// swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// after database
 var app = builder.Build();
 
+// Test database connection
+// after app
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+    dbContext.Database.OpenConnection();
 
     try
     {
+        // Check if the application can connect to the database
         if (dbContext.Database.CanConnect())
         {
             Console.WriteLine("Database is connected");
@@ -170,19 +180,22 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-app.UseCors(MyAllowSpecificOrigins);
 app.UseMiddleware<ErrorHandlerMiddleware>();
+
+// CORS
+app.UseCors(MyAllowSpecificOrigins);
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    // Add a default route that returns a string
+    app.MapGet("/", () => "Hello, World!");
 }
 
-app.MapGet("/", () => "Hello ");
-
+// Start the application
 app.Run();
