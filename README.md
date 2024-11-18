@@ -181,13 +181,6 @@ The API will be available at: `http://localhost:5125`
 
 The application is deployed and can be accessed at: https://gemstonestore.onrender.com/
 
-## Team Members
-
-- **Lead**: Retaj (@R-1493)
-- **Team Member**: Norah Alqassim (@noraalqassim)
-- **Team Member**: Ethar Alrehaili (@etharalrehaili)
-- **Team Member**: Waad (@Waad-Raggam)
-
 ## License
 
 This project is licensed under the MIT License.
