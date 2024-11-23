@@ -50,7 +50,7 @@ This project is a backend solution for an e-commerce platform dedicated to selli
 ### 1. Clone the repository
 
 ```bash
-git clone git@github.com:R-1493/sda-3-online-Backend_Teamwork.git
+git clone git@github.com:R-1493/Tanznite-Backend.git
 ```
 
 ### 2. Setup database
